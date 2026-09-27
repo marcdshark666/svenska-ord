@@ -472,7 +472,7 @@ input[type="range"] { width: 100%; accent-color: var(--bla); }
 .stopp-namn .stjarnor { font-size: .72rem; }
 .deko { position: absolute; font-size: 1.6rem; z-index: 1; pointer-events: none; opacity: .9; }
 .du-ar-har {
-  position: absolute; z-index: 4; display: flex; flex-direction: column; align-items: center; pointer-events: none;
+  position: absolute; z-index: 4; display: flex; flex-direction: column-reverse; align-items: center; gap: 2px; pointer-events: none;
   animation: gunga 2.5s ease-in-out infinite;
 }
 .du-ar-har span { background: var(--bla); color: #fff; font-size: .7rem; font-weight: 800; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }

@@ -348,7 +348,7 @@
       karta.appendChild(knapp);
       if (nu) {
         const pa = p.x > 50 ? 'vanster' : 'hoger';
-        const mark = h('div', { class: 'du-ar-har ' + pa, style: { top: (p.y - 34) + 'px', left: (p.x > 50 ? p.x - 30 : p.x + 12) + '%' } },
+        const mark = h('div', { class: 'du-ar-har ' + pa, style: { top: (p.y - 70) + 'px', left: (p.x > 50 ? p.x - 36 : p.x + 13) + '%' } },
           Figurer.figur('bosse', 'vinka', { storlek: 58 }), h('span', null, 'Du är här!'));
         karta.appendChild(mark);
       }
