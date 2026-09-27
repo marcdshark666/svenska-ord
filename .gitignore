@@ -1,0 +1,4 @@
+_bygg/
+node_modules/
+*.tmp
+.env
