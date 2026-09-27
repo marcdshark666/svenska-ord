@@ -95,8 +95,10 @@ button.chip:hover { background: rgba(255, 255, 255, .28); }
 .alfa-rad {
   display: flex; gap: 5px; overflow-x: auto; padding: 6px 16px 9px;
   scrollbar-width: thin; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity;
-  max-width: 760px; margin: 0 auto;
+  max-width: 1240px; margin: 0 auto;
 }
+/* Centrera raden när alla 29 bokstäver får plats, utan att klippa vänsterkanten när den skrollar. */
+.alfa-rad::before, .alfa-rad::after { content: ""; margin: auto; }
 .alfa-knapp {
   flex: 0 0 auto; width: 36px; height: 36px; border-radius: 10px; border: 0;
   background: rgba(255, 255, 255, .95); color: var(--bla-mork);

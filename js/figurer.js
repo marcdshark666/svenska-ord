@@ -28,7 +28,7 @@
         <circle cx="43" cy="56" r="4.5" fill="#f08c8c" opacity=".45"/><circle cx="77" cy="56" r="4.5" fill="#f08c8c" opacity=".45"/>
         <g class="ogon"><circle cx="49" cy="42" r="5" fill="#1d1d1d"/><circle cx="71" cy="42" r="5" fill="#1d1d1d"/>
           <circle cx="50.6" cy="40.4" r="1.7" fill="#fff"/><circle cx="72.6" cy="40.4" r="1.7" fill="#fff"/></g>
-        <g class="bryn"><path d="M43 33 L54 36" stroke="#3a2414" stroke-width="2.5" stroke-linecap="round"/><path d="M77 33 L66 36" stroke="#3a2414" stroke-width="2.5" stroke-linecap="round"/></g>
+        <g class="bryn"><path d="M43 36 L54 31" stroke="#3a2414" stroke-width="2.5" stroke-linecap="round"/><path d="M77 36 L66 31" stroke="#3a2414" stroke-width="2.5" stroke-linecap="round"/></g>
         <ellipse cx="60" cy="52" rx="6.5" ry="4.5" fill="#3a2414"/>
         ${MUN}
         <rect class="tand" x="55" y="62" width="10" height="9" rx="1.5" fill="#fff" stroke="#d6d0c4"/>
@@ -48,7 +48,7 @@
         <path d="M58 106 Q60 114 62 106" fill="#5e3f26"/>
         <g class="ogon"><circle cx="49" cy="52" r="5" fill="#1d1d1d"/><circle cx="71" cy="52" r="5" fill="#1d1d1d"/>
           <circle cx="50.6" cy="50.4" r="1.7" fill="#fff"/><circle cx="72.6" cy="50.4" r="1.7" fill="#fff"/></g>
-        <g class="bryn"><path d="M43 43 L54 46" stroke="#2a1a0e" stroke-width="2.5" stroke-linecap="round"/><path d="M77 43 L66 46" stroke="#2a1a0e" stroke-width="2.5" stroke-linecap="round"/></g>
+        <g class="bryn"><path d="M43 46 L54 41" stroke="#2a1a0e" stroke-width="2.5" stroke-linecap="round"/><path d="M77 46 L66 41" stroke="#2a1a0e" stroke-width="2.5" stroke-linecap="round"/></g>
         <path class="mun-glad" d="M52 100 Q60 106 68 100" fill="none" stroke="#2a1a0e" stroke-width="2.5" stroke-linecap="round"/>
         <path class="mun-ledsen" d="M53 104 Q60 99 67 104" fill="none" stroke="#2a1a0e" stroke-width="2.5" stroke-linecap="round"/>
         <circle cx="42" cy="64" r="4" fill="#f08c8c" opacity=".35"/><circle cx="78" cy="64" r="4" fill="#f08c8c" opacity=".35"/>
@@ -69,7 +69,7 @@
         <g class="ogon"><ellipse cx="48" cy="54" rx="5.5" ry="6" fill="#2f5d3a"/><ellipse cx="72" cy="54" rx="5.5" ry="6" fill="#2f5d3a"/>
           <ellipse cx="48" cy="54" rx="2" ry="4.5" fill="#111"/><ellipse cx="72" cy="54" rx="2" ry="4.5" fill="#111"/>
           <circle cx="49.5" cy="51.5" r="1.4" fill="#fff"/><circle cx="73.5" cy="51.5" r="1.4" fill="#fff"/></g>
-        <g class="bryn"><path d="M42 45 L53 48" stroke="#5a3a1a" stroke-width="2.5" stroke-linecap="round"/><path d="M78 45 L67 48" stroke="#5a3a1a" stroke-width="2.5" stroke-linecap="round"/></g>
+        <g class="bryn"><path d="M42 48 L53 43" stroke="#5a3a1a" stroke-width="2.5" stroke-linecap="round"/><path d="M78 48 L67 43" stroke="#5a3a1a" stroke-width="2.5" stroke-linecap="round"/></g>
         <path d="M56 64 L64 64 L60 69 Z" fill="#c0506a"/>
         <path class="mun-glad" d="M52 72 Q56 76 60 72 Q64 76 68 72" fill="none" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round"/>
         <path class="mun-ledsen" d="M53 76 Q60 71 67 76" fill="none" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round"/>
