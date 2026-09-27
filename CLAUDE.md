@@ -4,7 +4,8 @@ Läs `../.agents/PROTOKOLL.md` först. Tillståndsnivå: **fri** – push/deploy
 
 ## Vad projektet är
 Statisk språksajt (GitHub Pages, repo `marcdshark666/svenska-ord`, gren `main`, rot `/`) för att lära sig svenska
-A1–C2 med översättning till engelska och polska. Allt UI på svenska. Se `README.md`.
+A1–C2 med översättning till engelska och polska. Gränssnittet finns på svenska, engelska och polska
+(språkknappen SV | EN | PL i toppen, `js/i18n.js`). Se `README.md`.
 Live: https://marcdshark666.github.io/svenska-ord/
 
 ## Lägga till ord (vanligaste uppdraget)
@@ -22,3 +23,6 @@ Använd bara korrekt svenska och korrekt polska/engelska. Kontrollera efteråt: 
 - `words.json` skrivs med ett ord per rad (`verktyg/ordfil.js` `serialisera`) – samma format i webbläsaren (`app.js`).
 - Nya övningstyper/lektioner: kör `?sjalvtest=1` lokalt – ska visa `SJALVTEST OK`.
 - Respektera `prefers-reduced-motion` för nya animationer.
+- **All ny gränssnittstext går via `t('nyckel')` i `js/i18n.js`** med alla tre språk `[sv, en, pl]` – aldrig hårdkodad.
+  Ny lektion i `words.json` ⇒ lägg till `lekt.<id>` i `js/i18n.js`. `node verktyg/kontroll.js` stoppar saknade språk.
+- Ändrad js/css ⇒ höj cachebrytaren `?v=N` i `index.html`.

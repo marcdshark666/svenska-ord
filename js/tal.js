@@ -2,6 +2,7 @@
  * uttalskontroll (SpeechRecognition). Allt degraderar snällt när API saknas. */
 (function () {
   'use strict';
+  const t = (k, v) => (window.I18n ? window.I18n.t(k, v) : k);
 
   const synth = ('speechSynthesis' in window) ? window.speechSynthesis : null;
   const Igenkanning = window.SpeechRecognition || window.webkitSpeechRecognition || null;
@@ -83,16 +84,16 @@
 
   /** Startar inspelning. Returnerar { stoppa(): Promise<{url, blob}> }. */
   async function spelaIn() {
-    if (!kanSpelaIn()) throw new Error('Din webbläsare kan inte spela in ljud.');
+    if (!kanSpelaIn()) throw new Error(t('tal.kanInteSpelaIn'));
     let strom;
     try {
       strom = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
     } catch (e) {
       if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) {
-        throw new Error('Mikrofonen är blockerad. Tillåt mikrofonen i webbläsarens adressfält och försök igen.');
+        throw new Error(t('tal.mikBlockerad'));
       }
-      if (e && e.name === 'NotFoundError') throw new Error('Hittade ingen mikrofon.');
-      throw new Error('Kunde inte starta mikrofonen: ' + (e && e.message ? e.message : e));
+      if (e && e.name === 'NotFoundError') throw new Error(t('tal.ingenMik'));
+      throw new Error(t('tal.mikFel', { fel: e && e.message ? e.message : String(e) }));
     }
     const mime = valjMime();
     const rec = mime ? new MediaRecorder(strom, { mimeType: mime }) : new MediaRecorder(strom);
@@ -120,9 +121,9 @@
   /** Lyssnar efter svenska. Löses med { text, alternativ[] } eller kastar fel med begripligt meddelande. */
   function kanna({ lang = 'sv-SE', maxMs = 7000 } = {}) {
     return new Promise((resolve, reject) => {
-      if (!Igenkanning) { reject(new Error('Taligenkänning saknas i den här webbläsaren.')); return; }
+      if (!Igenkanning) { reject(new Error(t('tal.saknas'))); return; }
       let r;
-      try { r = new Igenkanning(); } catch (e) { reject(new Error('Kunde inte starta taligenkänningen.')); return; }
+      try { r = new Igenkanning(); } catch (e) { reject(new Error(t('tal.kundeInteStarta'))); return; }
       r.lang = lang;
       r.interimResults = false;
       r.maxAlternatives = 5;
@@ -142,21 +143,21 @@
         fardig = true;
         clearTimeout(timer);
         const kod = ev && ev.error;
-        const text = {
-          'not-allowed': 'Mikrofonen är blockerad. Tillåt den i adressfältet.',
-          'service-not-allowed': 'Taligenkänningen är avstängd i webbläsaren.',
-          'no-speech': 'Jag hörde inget. Prova igen och tala lite högre.',
-          'audio-capture': 'Hittade ingen mikrofon.',
-          'network': 'Taligenkänningen behöver internet.',
-          'language-not-supported': 'Svenska stöds inte av taligenkänningen här.'
-        }[kod] || ('Taligenkänningen misslyckades (' + kod + ').');
-        reject(new Error(text));
+        const nyckel = {
+          'not-allowed': 'tal.notAllowed',
+          'service-not-allowed': 'tal.serviceNotAllowed',
+          'no-speech': 'tal.noSpeech',
+          'audio-capture': 'tal.ingenMik',
+          'network': 'tal.network',
+          'language-not-supported': 'tal.langNotSupported'
+        }[kod];
+        reject(new Error(nyckel ? t(nyckel) : t('tal.misslyckades', { kod })));
       };
       r.onend = () => {
         clearTimeout(timer);
-        if (!fardig) { fardig = true; reject(new Error('Jag hörde inget. Prova igen.')); }
+        if (!fardig) { fardig = true; reject(new Error(t('tal.hordeInget'))); }
       };
-      try { r.start(); } catch (e) { clearTimeout(timer); reject(new Error('Kunde inte starta taligenkänningen.')); }
+      try { r.start(); } catch (e) { clearTimeout(timer); reject(new Error(t('tal.kundeInteStarta'))); }
     });
   }
 

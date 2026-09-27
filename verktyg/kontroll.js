@@ -13,6 +13,36 @@ for (const n of of.NIVAER) {
   if (antal < 40) fel.push(`nivå ${n} har bara ${antal} ord/fraser (minst 40)`);
   if (!data.lektioner.some(l => l.id === 'boss-' + n.toLowerCase())) fel.push(`nivå ${n} saknar bosskamp`);
 }
+
+// Gränssnittets översättningar (js/i18n.js): varje nyckel ska finnas på svenska, engelska och polska,
+// med samma sorts värde och samma {platshållare} i alla tre språk. Alla lektioner ska ha översatta namn.
+let ordbok = null;
+try { ordbok = require('../js/i18n.js').ORDBOK; } catch (e) { fel.push('js/i18n.js går inte att läsa: ' + e.message); }
+if (ordbok) {
+  const SPRAK = ['sv', 'en', 'pl'];
+  const platser = v => (String(v).match(/\{\w+\}/g) || []).sort().join(',');
+  const typ = v => Array.isArray(v) ? 'lista' : typeof v;
+  for (const [nyckel, post] of Object.entries(ordbok)) {
+    if (!Array.isArray(post) || post.length !== 3) { fel.push(`i18n "${nyckel}": ska ha exakt tre värden [sv, en, pl]`); continue; }
+    const sv = post[0];
+    post.forEach((v, i) => {
+      const s = SPRAK[i];
+      if (v === undefined || v === null || v === '') fel.push(`i18n "${nyckel}": saknar ${s}`);
+      else if (typ(v) !== typ(sv)) fel.push(`i18n "${nyckel}": ${s} har fel typ`);
+      else if (Array.isArray(v)) {
+        if (v.length !== sv.length) fel.push(`i18n "${nyckel}": ${s} har ${v.length} rader, svenska ${sv.length}`);
+        if (v.some(x => !x)) fel.push(`i18n "${nyckel}": ${s} har tomma rader`);
+      } else if (typeof v === 'object') {
+        if (!v.one || !v.other) fel.push(`i18n "${nyckel}": ${s} saknar pluralformerna one/other`);
+        if (Object.values(v).some(x => platser(x) !== platser(sv.other))) fel.push(`i18n "${nyckel}": ${s} har andra {platshållare}`);
+      } else if (platser(v) !== platser(sv)) fel.push(`i18n "${nyckel}": ${s} har andra {platshållare} än svenska`);
+    });
+  }
+  for (const l of data.lektioner) {
+    if (!l.boss && !ordbok['lekt.' + l.id]) fel.push(`lektionen "${l.id}" saknar översatt namn (lekt.${l.id} i js/i18n.js)`);
+  }
+}
+
 if (fel.length) { console.error('FEL:\n  ' + fel.join('\n  ')); process.exit(1); }
-console.log(`OK: ${data.ord.length} ord/fraser, ${data.lektioner.length} lektioner.`);
+console.log(`OK: ${data.ord.length} ord/fraser, ${data.lektioner.length} lektioner, ${ordbok ? Object.keys(ordbok).length : 0} gränssnittstexter på sv/en/pl.`);
 for (const n of of.NIVAER) console.log(`  ${n}: ${data.ord.filter(o => o.niva === n).length}`);

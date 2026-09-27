@@ -77,13 +77,18 @@
       </g></svg>`
   };
 
-  const NAMN = { bosse: 'Bosse Bäver', ella: 'Ella Älg', lo: 'Lilla Lo' };
+  // Namnen följer sidans språk (getters läses vid varje användning).
+  const NAMN = {
+    get bosse() { return window.I18n.t('fig.bosse'); },
+    get ella() { return window.I18n.t('fig.ella'); },
+    get lo() { return window.I18n.t('fig.lo'); }
+  };
 
   /** Returnerar ett element med figuren. hum: glad | trost | fira | vinka | tank */
   function figur(vem = 'bosse', hum = 'glad', { storlek = 96 } = {}) {
     const mall = document.createElement('template');
     mall.innerHTML = (SVG[vem] || SVG.bosse).trim();
-    const el = h('div', { class: `figur figur-${vem} hum-${hum}`, role: 'img', 'aria-label': NAMN[vem] || 'Figur', style: { width: storlek + 'px' } });
+    const el = h('div', { class: `figur figur-${vem} hum-${hum}`, role: 'img', 'aria-label': NAMN[vem] || window.I18n.t('fig.figur'), style: { width: storlek + 'px' } });
     el.appendChild(mall.content.firstChild);
     return el;
   }

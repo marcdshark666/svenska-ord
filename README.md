@@ -7,6 +7,11 @@ Gratis, reklamfritt och helt statiskt (vanilla HTML/CSS/JS, inga byggsteg). Kör
 
 ## Vad finns på sajten
 
+- **Gränssnitt på tre språk:** knappen **SV | EN | PL** i toppen (syns alltid, även inne i lektioner) byter
+  allt gränssnitt direkt utan omladdning. Orden som lärs ut är alltid svenska; översättningen följer valt språk
+  (engelska → en, polska → pl, svenska → båda). Valet sparas i webbläsaren; första gången gissas det från
+  webbläsarens språk (pl → polska, sv → svenska, annars engelska).
+
 - **Alfabetsraden A–Ö** överst (alltid synlig). Tryck på en bokstav: namnet läses upp och en panel visar två
   uttalsexempel – vokal + en konsonant (lång vokal, *tak*) och vokal + två konsonanter (kort vokal, *tack*);
   för konsonanter enkel/dubbel (*hat/hatt*). Allt med översättning till engelska och polska.
@@ -37,6 +42,7 @@ Allt framsteg sparas i `localStorage` (alla anrop i try/catch – sajten fungera
 | Fil | Innehåll |
 |-----|----------|
 | `index.html`, `style.css` | Sidan och stilen (mobil först, mörkt läge) |
+| `js/i18n.js` | Gränssnittets texter på svenska, engelska och polska (`t()`, `data-i18n`, språkknappen) |
 | `js/dom.js` | Små DOM-hjälpare (all text via `textContent`) |
 | `js/tal.js` | Uppläsning, inspelning, taligenkänning, likhetsmått |
 | `js/ljud.js` | Feedbackljud med Web Audio |
@@ -46,7 +52,7 @@ Allt framsteg sparas i `localStorage` (alla anrop i try/catch – sajten fungera
 | `words.json` | Alla ord/fraser (ett per rad för läsbara diffar) |
 | `lagg-till-ord.js` | Lägg till ett ord från terminalen |
 | `verktyg/ordfil.js` | Gemensam validering/serialisering av `words.json` |
-| `verktyg/kontroll.js` | Kontrollerar `words.json` |
+| `verktyg/kontroll.js` | Kontrollerar `words.json` och att alla texter i `js/i18n.js` finns på sv/en/pl |
 
 ### Format i `words.json`
 

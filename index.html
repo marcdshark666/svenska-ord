@@ -3,47 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Svenska Ord – lär dig de vanligaste svenska orden</title>
-  <meta name="description" content="Lär dig de vanligaste svenska orden med översättning till engelska och polska. Lektioner, uppläsning, inspelning och uttalskontroll – gratis och reklamfritt.">
+  <title data-i18n="sida.titel">Svenska Ord – lär dig de vanligaste svenska orden</title>
+  <meta name="description" data-i18n-content="sida.beskrivning" content="Lär dig de vanligaste svenska orden med översättning till engelska och polska. Lektioner, uppläsning, inspelning och uttalskontroll – gratis och reklamfritt.">
   <meta name="theme-color" content="#006aa7">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23006aa7'/%3E%3Crect x='20' width='10' height='64' fill='%23fecc02'/%3E%3Crect y='27' width='64' height='10' fill='%23fecc02'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-  <a class="hoppa" href="#vy">Hoppa till innehållet</a>
+  <a class="hoppa" href="#vy" data-i18n="hoppa">Hoppa till innehållet</a>
   <header class="topp">
     <div class="topp-rad">
-      <a href="#/hem" class="logga" aria-label="Svenska Ord – startsidan"><span class="flagga" aria-hidden="true"></span><span class="logga-text">Svenska&nbsp;Ord</span></a>
-      <div id="stat" class="stat"></div>
+      <a href="#/hem" class="logga" aria-label="Svenska Ord – startsidan" data-i18n-aria-label="logga.aria"><span class="flagga" aria-hidden="true"></span><span class="logga-text">Svenska&nbsp;Ord</span></a>
+      <div class="topp-hoger"><div id="stat" class="stat"></div><div id="sprakval-plats"></div></div>
     </div>
-    <nav id="alfa-rad" class="alfa-rad" aria-label="Svenska alfabetet"></nav>
+    <nav id="alfa-rad" class="alfa-rad" aria-label="Svenska alfabetet" data-i18n-aria-label="alfa.aria"></nav>
     <div id="alfa-panel" class="alfa-panel" hidden></div>
   </header>
 
   <main id="vy" class="vy" tabindex="-1">
-    <p class="dampad centrerad">Laddar orden…</p>
+    <p class="dampad centrerad" data-i18n="laddar">Laddar orden…</p>
   </main>
 
-  <nav class="nav" aria-label="Huvudmeny">
-    <a href="#/hem" data-sida="hem"><span aria-hidden="true">🏠</span>Lär dig</a>
-    <a href="#/ordlista" data-sida="ordlista"><span aria-hidden="true">📖</span>Ordlista</a>
-    <a href="#/mina" data-sida="mina"><span aria-hidden="true">✍️</span>Mina ord</a>
-    <a href="#/profil" data-sida="profil"><span aria-hidden="true">🏅</span>Profil</a>
-    <a href="#/installningar" data-sida="installningar"><span aria-hidden="true">⚙️</span>Mer</a>
+  <nav class="nav" aria-label="Huvudmeny" data-i18n-aria-label="nav.aria">
+    <a href="#/hem" data-sida="hem"><span aria-hidden="true">🏠</span><span data-i18n="nav.hem">Lär dig</span></a>
+    <a href="#/ordlista" data-sida="ordlista"><span aria-hidden="true">📖</span><span data-i18n="nav.ordlista">Ordlista</span></a>
+    <a href="#/mina" data-sida="mina"><span aria-hidden="true">✍️</span><span data-i18n="nav.mina">Mina ord</span></a>
+    <a href="#/profil" data-sida="profil"><span aria-hidden="true">🏅</span><span data-i18n="nav.profil">Profil</span></a>
+    <a href="#/installningar" data-sida="installningar"><span aria-hidden="true">⚙️</span><span data-i18n="nav.mer">Mer</span></a>
   </nav>
 
-  <section id="lektion" class="lektion" hidden aria-label="Lektion"></section>
+  <section id="lektion" class="lektion" hidden aria-label="Lektion" data-i18n-aria-label="lektion.aria"></section>
 
-  <dialog id="ordkort" class="dlg" aria-label="Ordkort">
+  <dialog id="ordkort" class="dlg" aria-label="Ordkort" data-i18n-aria-label="ordkort.aria">
     <div class="dlg-inne"></div>
   </dialog>
 
   <noscript><p class="ruta fel">Svenska Ord behöver JavaScript.</p></noscript>
-  <script src="js/dom.js"></script>
-  <script src="js/tal.js"></script>
-  <script src="js/ljud.js"></script>
-  <script src="js/figurer.js"></script>
-  <script src="js/alfabet.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/i18n.js?v=2"></script>
+  <script src="js/dom.js?v=2"></script>
+  <script src="js/tal.js?v=2"></script>
+  <script src="js/ljud.js?v=2"></script>
+  <script src="js/figurer.js?v=2"></script>
+  <script src="js/alfabet.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
 </body>
 </html>

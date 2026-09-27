@@ -5,6 +5,9 @@
 (function () {
   'use strict';
   const { h, tom, hogtalare } = window.DOM;
+  const I18n = window.I18n;
+  const t = I18n.t;
+  const FLAGGA = { en: '🇬🇧', pl: '🇵🇱' };
 
   // namn = hur bokstaven uttalas när man säger den (skickas till talsyntesen).
   // Vokalerna: A E I O U Y Å Ä Ö.
@@ -69,10 +72,13 @@
       { sv: 'dör', en: 'dies', pl: 'umiera' }, { sv: 'dörr', en: 'door', pl: 'drzwi' }] }
   ];
 
-  const ETIKETT_VOKAL = ['Lång vokal – följs av en konsonant', 'Kort vokal – följs av två konsonanter'];
-  const ETIKETT_KONS = ['Enkel konsonant', 'Dubbel konsonant'];
+  // Etiketter och anteckningar översätts (i18n.js); den svenska anteckningen i ALFABET styr bara logiken.
+  const ETIKETT_VOKAL = ['alfa.langVokal', 'alfa.kortVokal'];
+  const ETIKETT_KONS = ['alfa.enkel', 'alfa.dubbel'];
 
   let vald = null;
+  let panelEl = null;
+  let radEl = null;
 
   function markera(ord, bokstav) {
     // Fetstil på bokstaven (och dubbelteckningen) i exempelordet.
@@ -92,17 +98,17 @@
     panel.appendChild(h('div', { class: 'alfa-huvud' },
       h('div', { class: 'alfa-stor', lang: 'sv' }, post.b, h('small', null, post.b.toLowerCase())),
       h('div', { class: 'alfa-namn' },
-        h('div', null, 'Uttalas: ', h('b', { lang: 'sv' }, post.namn), ' ', hogtalare(post.namn, { liten: true, etikett: 'Läs upp bokstaven ' + post.b })),
-        h('div', { class: 'dampad' }, post.vokal ? 'Vokal' : 'Konsonant')),
-      h('button', { type: 'button', class: 'stang', 'aria-label': 'Stäng', onclick: () => stang(panel) }, '×')));
-    if (post.not) panel.appendChild(h('p', { class: 'alfa-not' }, post.not));
+        h('div', null, t('alfa.uttalas'), h('b', { lang: 'sv' }, post.namn), ' ', hogtalare(post.namn, { liten: true, etikett: t('alfa.lasBokstav', { b: post.b }) })),
+        h('div', { class: 'dampad' }, t(post.vokal ? 'alfa.vokal' : 'alfa.konsonant'))),
+      h('button', { type: 'button', class: 'stang', 'aria-label': t('stang'), onclick: () => stang(panel) }, '×')));
+    if (post.not) panel.appendChild(h('p', { class: 'alfa-not' }, I18n.har('alfa.not.' + post.b) ? t('alfa.not.' + post.b) : post.not));
     const lista = h('div', { class: 'alfa-exempel' });
     post.ex.forEach((e, i) => {
       lista.appendChild(h('div', { class: 'alfa-ex' },
-        h('div', { class: 'alfa-etikett' }, post.not && !post.vokal && /aldrig|nästan bara|mest i/.test(post.not) ? 'Exempel ' + (i + 1) : etiketter[i]),
+        h('div', { class: 'alfa-etikett' }, post.not && !post.vokal && /aldrig|nästan bara|mest i/.test(post.not) ? t('alfa.exempel', { n: i + 1 }) : t(etiketter[i])),
         h('div', { class: 'alfa-ord', lang: 'sv' }, ...markera(e.sv, post.b)),
         h('div', { class: 'alfa-knappar' }, hogtalare(e.sv), hogtalare(e.sv, { langsam: true })),
-        h('div', { class: 'alfa-overs' }, h('span', { lang: 'en' }, '🇬🇧 ' + e.en), h('span', { lang: 'pl' }, '🇵🇱 ' + e.pl))));
+        h('div', { class: 'alfa-overs' }, ...I18n.visadeSprak().map(s => h('span', { lang: s }, FLAGGA[s] + ' ' + e[s])))));
     });
     panel.appendChild(lista);
     panel.hidden = false;
@@ -115,11 +121,12 @@
   }
 
   function init(rad, panel) {
+    radEl = rad; panelEl = panel;
     tom(rad);
     for (const post of ALFABET) {
       const knapp = h('button', {
         type: 'button', class: 'alfa-knapp' + (post.vokal ? ' vokal' : ''), lang: 'sv',
-        'aria-pressed': 'false', 'aria-label': 'Bokstaven ' + post.b,
+        'aria-pressed': 'false', 'aria-label': t('alfa.bokstaven', { b: post.b }), 'data-b': post.b,
         onclick: () => {
           if (vald === post.b) { stang(panel); return; }
           document.querySelectorAll('.alfa-knapp[aria-pressed="true"]').forEach(k => k.setAttribute('aria-pressed', 'false'));
@@ -133,6 +140,15 @@
     }
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !panel.hidden) stang(panel); });
   }
+
+  // Språkbyte: nya etiketter på knapparna och rita om en öppen panel.
+  I18n.narSprakAndras(() => {
+    if (radEl) radEl.querySelectorAll('.alfa-knapp').forEach(k => k.setAttribute('aria-label', t('alfa.bokstaven', { b: k.dataset.b })));
+    if (panelEl && !panelEl.hidden && vald) {
+      const post = ALFABET.find(p => p.b === vald);
+      if (post) visaPanel(panelEl, post);
+    }
+  });
 
   window.Alfabet = { ALFABET, init };
 })();

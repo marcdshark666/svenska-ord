@@ -39,8 +39,8 @@
     return h('button', {
       type: 'button',
       class: 'hogtalare' + (liten ? ' liten' : '') + (langsam ? ' langsam' : ''),
-      'aria-label': etikett || ((langsam ? 'Läs upp långsamt: ' : 'Läs upp: ') + text),
-      title: langsam ? 'Långsamt' : 'Lyssna',
+      'aria-label': etikett || window.I18n.t(langsam ? 'las.langsamt' : 'las.upp', { text }),
+      title: window.I18n.t(langsam ? 'langsamt' : 'lyssna'),
       onclick: ev => { ev.stopPropagation(); window.Tal.saga(text, { langsam }); }
     }, langsam ? '🐢' : '🔊');
   }
