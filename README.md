@@ -35,6 +35,11 @@ Gratis, reklamfritt och helt statiskt (vanilla HTML/CSS/JS, inga byggsteg). Kör
   vänster/höger) – Leitner-lådor 1–5 (kan → nästa låda: 1, 3, 7, 21 dagar; kan inte → låda 1 och tillbaka i passet).
   Blanda-knapp och "börja om" per lek. Framsteg i `localStorage` (`svenskaord.kort.v1`). Saknas en lekfil visas leken som
   "kommer snart".
+- **Ordboksläge:** tryck på ett svenskt ord på kortets baksida (huvudordet eller ett ord i exempelmeningen) → en ruta
+  (bottom sheet på mobil) med grundform, ordklass, uppläsning, översättning till polska/engelska (egna play-knappar),
+  definition från engelska Wiktionary (live, cache, tidsgräns 5 s, tyst reserv), andra exempelmeningar och fraser ur alla
+  lekar + `words.json`, och länkar till svenska.se, Glosbe sv→pl/sv→en och Wiktionary. Böjningar hittar grundformen
+  (huset → hus, sprang → springa). Översättningar hittas aldrig på: saknas en visas det med länk till Glosbe.
 - **Mina ord:** formulär som sparar egna ord i webbläsaren (localStorage) och direkt blir lektionen "Mina ord".
   Export/import som JSON.
 - **Spara till GitHub** (valfritt): användaren klistrar in en egen fine-grained token (Contents: read/write för
@@ -55,6 +60,7 @@ Allt framsteg sparas i `localStorage` (alla anrop i try/catch – sajten fungera
 | `js/figurer.js` | Bosse Bäver, Ella Älg, Lilla Lo (SVG) |
 | `js/alfabet.js` | Alfabetsraden med uttalsexempel |
 | `js/kort.js` | Flashcards: leklista, vändkort, Leitner-repetition, svep |
+| `js/lexikon.js` | Ordboksläget: lokalt lexikon med böjningsmatchning, Wiktionary, rutan |
 | `js/kortdata.js` | Lekarna och valideringen av `data/kort-*.json` (delas av webbläsaren och `verktyg/kontroll.js`) |
 | `data/kort-a1.json` … `kort-c2.json`, `kort-medicin.json` | Flashcard-lekarna (ett kort per rad) |
 | `js/app.js` | Karta, lektioner, övningar, märken, egna ord, GitHub-sparning |

@@ -223,8 +223,8 @@
       h('span', { class: 'kort-tips dampad' }, t('kort.vandTips')));
     const bak = h('div', { class: 'sida bak', 'aria-hidden': P.vand ? 'false' : 'true' },
       h('span', { class: 'kort-lada' }, h('span', { class: 'sprak-flagga flagga-sv', 'aria-hidden': 'true' }), ' SV'),
-      h('div', { class: 'kort-sv-rad' }, h('span', { class: 'kort-sv', lang: 'sv' }, k.sv), spela(k.sv, 'sv')),
-      k.exempel_sv ? h('div', { class: 'kort-exempel' }, h('span', { lang: 'sv' }, k.exempel_sv), spela(k.exempel_sv, 'sv', { liten: true })) : null,
+      h('div', { class: 'kort-sv-rad' }, h('span', { class: 'kort-sv', lang: 'sv' }, window.Lexikon ? window.Lexikon.ordKnapp(k.sv) : k.sv), spela(k.sv, 'sv')),
+      k.exempel_sv ? h('div', { class: 'kort-exempel' }, h('span', { lang: 'sv' }, ...(window.Lexikon ? window.Lexikon.klickbarMening(k.exempel_sv) : [k.exempel_sv])), spela(k.exempel_sv, 'sv', { liten: true })) : null,
       h('span', { class: 'kort-sma dampad' }, [k.pl, k.en].filter(Boolean).join(' · ')),
       k.kategori ? h('span', { class: 'kort-kategori' }, k.kategori) : null);
     const inre = h('div', { class: 'flip-inre' }, fram, bak);
@@ -376,6 +376,9 @@
       const forst = P.ko[0].id;
       vand();
       if (!rot.querySelector('.flipkort.vand')) fel.push('flashcards: kortet vändes inte');
+      // Ordboksläget: tryck på ord på baksidan (js/lexikon.js).
+      if (window.Lexikon) await window.Lexikon.sjalvtest(fel, rot); else fel.push('lexikon.js saknas');
+      if (!rot.querySelector('.flipkort.vand')) fel.push('flashcards: kortet vändes tillbaka av ordboksrutan');
       if (rot.querySelector('.betyg.dold')) fel.push('flashcards: betygsknapparna syns inte efter vändning');
       betygsatt(3);
       if (P.ko.length !== fore - 1) fel.push('flashcards: "Kan" tog inte bort kortet ur kön');
@@ -407,5 +410,5 @@
     }
   }
 
-  window.Kort = { visa, omrita, sjalvtest };
+  window.Kort = { visa, omrita, sjalvtest, laddaAlla };
 })();
