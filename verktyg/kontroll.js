@@ -43,6 +43,28 @@ if (ordbok) {
   }
 }
 
+// Flashcards (data/kort-*.json): schema, dubbletter, tomma fält och minst 150 kort per nivålek.
+// Medicinleken är valfri – saknas filen visar sajten "kommer snart".
+const fs = require('fs');
+const path = require('path');
+const KortData = require('../js/kortdata.js');
+const kortAntal = {};
+for (const lek of KortData.LEKAR) {
+  const fil = path.join(__dirname, '..', 'data', `kort-${lek}.json`);
+  if (!fs.existsSync(fil)) {
+    if (KortData.NIVALEKAR.includes(lek)) fel.push(`data/kort-${lek}.json saknas`);
+    else kortAntal[lek] = 'saknas (kommer snart)';
+    continue;
+  }
+  let lekData;
+  try { lekData = JSON.parse(fs.readFileSync(fil, 'utf8').replace(/^﻿/, '')); }
+  catch (e) { fel.push(`data/kort-${lek}.json går inte att läsa: ${e.message}`); continue; }
+  fel.push(...KortData.validera(lekData, lek));
+  kortAntal[lek] = Array.isArray(lekData.kort) ? lekData.kort.length : 0;
+}
+for (const lek of KortData.LEKAR) if (ordbok && !ordbok['kort.lek.' + lek]) fel.push(`leken ${lek} saknar namn (kort.lek.${lek} i js/i18n.js)`);
+
 if (fel.length) { console.error('FEL:\n  ' + fel.join('\n  ')); process.exit(1); }
 console.log(`OK: ${data.ord.length} ord/fraser, ${data.lektioner.length} lektioner, ${ordbok ? Object.keys(ordbok).length : 0} gränssnittstexter på sv/en/pl.`);
 for (const n of of.NIVAER) console.log(`  ${n}: ${data.ord.filter(o => o.niva === n).length}`);
+console.log('Flashcards: ' + Object.entries(kortAntal).map(([l, n]) => `${l}=${n}`).join(', '));

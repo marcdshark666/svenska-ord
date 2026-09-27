@@ -7,6 +7,7 @@
   const synth = ('speechSynthesis' in window) ? window.speechSynthesis : null;
   const Igenkanning = window.SpeechRecognition || window.webkitSpeechRecognition || null;
   let roster = [];
+  let allaRoster = []; // alla språk – för polska/engelska på flashcards
   let valdRost = null;
   let onskadRostURI = '';
   let hastighet = 0.95;
@@ -28,6 +29,7 @@
   function laddaRoster() {
     if (!synth) return;
     const alla = synth.getVoices() || [];
+    allaRoster = alla.slice();
     roster = alla.filter(r => /^sv([-_]|$)/i.test(r.lang)).sort((a, b) => rostPoang(b) - rostPoang(a));
     valdRost = roster.find(r => r.voiceURI === onskadRostURI) || roster[0] || null;
     lyssnare.forEach(f => { try { f(roster); } catch (e) { console.error(e); } });
@@ -42,6 +44,43 @@
     setTimeout(laddaRoster, 2500);
   }
 
+  /** Bästa rösten för ett språk (t.ex. 'pl-PL', 'en-GB'): exakt språkkod först, sedan samma språk. Svenska följer valet i ⚙️ Mer. */
+  function bastRost(lang) {
+    if (/^sv/i.test(lang)) return valdRost;
+    const kod = String(lang).toLowerCase().replace('_', '-');
+    const bas = kod.split('-')[0];
+    const poang = r => {
+      const rl = String(r.lang || '').toLowerCase().replace('_', '-');
+      const n = (r.name || '').toLowerCase();
+      let p = rl === kod ? 60 : 0;
+      if (/natural|neural|online/.test(n)) p += 40;
+      if (/google/.test(n)) p += 30;
+      if (/microsoft/.test(n)) p += 5;
+      if (r.localService) p += 2;
+      return p;
+    };
+    return allaRoster.filter(r => String(r.lang || '').toLowerCase().replace('_', '-').split('-')[0] === bas)
+      .sort((a, b) => poang(b) - poang(a))[0] || null;
+  }
+  function harRost(lang) { return !!bastRost(lang); }
+  /** Rösterna laddas asynkront: vänta in voiceschanged (högst ms) om listan är tom. */
+  function vantaPaRoster(ms = 1200) {
+    if (!synth || allaRoster.length) return Promise.resolve();
+    return new Promise(res => {
+      const klar = () => { laddaRoster(); res(); };
+      const tid = setTimeout(klar, ms);
+      try { synth.addEventListener('voiceschanged', () => { clearTimeout(tid); klar(); }, { once: true }); } catch (e) { /* timeout räcker */ }
+    });
+  }
+  /** Läser upp text på valfritt språk (pl-PL, en-GB …). Saknas röst sätts bara lang. Löses med {ok, harRost}. */
+  async function sagaSprak(text, lang) {
+    if (!synth || !text) return { ok: false, harRost: false };
+    await vantaPaRoster();
+    const finns = harRost(lang);
+    const ok = await saga(text, { lang });
+    return { ok, harRost: finns };
+  }
+
   /** Läser upp text på svenska. Returnerar ett löfte som löses när uppläsningen är klar. */
   function saga(text, { langsam = false, lang = 'sv-SE' } = {}) {
     return new Promise(resolve => {
@@ -50,7 +89,8 @@
         synth.cancel();
         const u = new SpeechSynthesisUtterance(String(text));
         u.lang = lang;
-        if (lang.startsWith('sv') && valdRost) u.voice = valdRost;
+        const rost = bastRost(lang);
+        if (rost) u.voice = rost;
         u.rate = langsam ? Math.max(0.45, hastighet * 0.6) : hastighet;
         u.pitch = 1;
         let klar = false;
@@ -200,7 +240,7 @@
     get harSvenskRost() { return roster.length > 0; },
     get roster() { return roster.slice(); },
     get valdRost() { return valdRost; },
-    saga, tyst, kanSpelaIn, spelaIn, kanKanna, kanna, likhet, normalisera, levenshtein,
+    saga, sagaSprak, harRost, bastRost, tyst, kanSpelaIn, spelaIn, kanKanna, kanna, likhet, normalisera, levenshtein,
     setRost(uri) { onskadRostURI = uri || ''; laddaRoster(); },
     setHastighet(v) { const n = Number(v); if (n >= 0.4 && n <= 1.5) hastighet = n; },
     narRosterAndras(f) { lyssnare.push(f); }

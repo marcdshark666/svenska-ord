@@ -240,10 +240,13 @@
   const vy = () => document.getElementById('vy');
 
   function visa({ behallScroll = false } = {}) {
-    const sida = (location.hash.replace(/^#\/?/, '') || 'hem').split('/')[0];
+    const [sida, del] = (location.hash.replace(/^#\/?/, '') || 'hem').split('/');
     document.querySelectorAll('.nav a').forEach(a => a.classList.toggle('aktiv', a.dataset.sida === sida));
     uppdateraHuvud();
-    const f = { hem: visaHem, ordlista: visaOrdlista, mina: visaMina, profil: visaProfil, installningar: visaInstallningar }[sida] || visaHem;
+    // Flashcards (js/kort.js): vid språkbyte ritas passet om utan att kön tappas.
+    if (sida === 'kort' && behallScroll && window.Kort.omrita(vy())) return;
+    const f = { hem: visaHem, ordlista: visaOrdlista, mina: visaMina, profil: visaProfil, installningar: visaInstallningar,
+      kort: rot => window.Kort.visa(rot, del) }[sida] || visaHem;
     tom(vy());
     try { f(vy()); } catch (e) { console.error(e); vy().appendChild(felruta(t('fel.nagot', { fel: e.message }))); }
     if (!behallScroll) window.scrollTo(0, 0);
@@ -1555,8 +1558,16 @@
         I18n.setSprak(sp);
         avsluta();
       }
+      // Flashcards: lekfilerna valideras, leklistan och ett pass i A1 spelas igenom.
+      await window.Kort.sjalvtest(fel, async (hash, selektor) => {
+        location.hash = hash; visa();
+        for (let i = 0; i < 100 && !vy().querySelector(selektor); i++) await new Promise(r => setTimeout(r, 50));
+        if (!vy().querySelector(selektor)) fel.push(`flashcards: ${hash} visade aldrig ${selektor}`);
+        return vy();
+      });
       if (I18n.saknade.length) fel.push('saknade översättningar: ' + I18n.saknade.join(', '));
       I18n.setSprak(forraSprak);
+      location.hash = '#/hem'; visa();
     } catch (e) {
       fel.push('undantag: ' + (e && e.stack || e));
     } finally {

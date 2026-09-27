@@ -29,6 +29,12 @@ Gratis, reklamfritt och helt statiskt (vanilla HTML/CSS/JS, inga byggsteg). Kör
 - **Spela in dig själv** (MediaRecorder) och jämför med förlagan (⇄ Jämför spelar upp båda efter varandra).
   **Uttalskontroll** med SpeechRecognition (sv-SE) i Chrome/Edge; i andra webbläsare visas en tydlig fallback
   (spela in och bedöm själv).
+- **Flashcards (🃏 Kort):** lekar A1, A2, B1, B2, C1, C2 (minst 150 kort var) och Medicin. Framsidan visar ordet på
+  **polska och engelska samtidigt**, baksidan på **svenska** (substantiv med en/ett, oräknebara som "mjölk (en)") med
+  exempelmening och uppläsning. Vänd med tryck/klick/mellanslag. Svara **Kan inte / Svårt / Kan** (1 2 3, eller svep
+  vänster/höger) – Leitner-lådor 1–5 (kan → nästa låda: 1, 3, 7, 21 dagar; kan inte → låda 1 och tillbaka i passet).
+  Blanda-knapp och "börja om" per lek. Framsteg i `localStorage` (`svenskaord.kort.v1`). Saknas en lekfil visas leken som
+  "kommer snart".
 - **Mina ord:** formulär som sparar egna ord i webbläsaren (localStorage) och direkt blir lektionen "Mina ord".
   Export/import som JSON.
 - **Spara till GitHub** (valfritt): användaren klistrar in en egen fine-grained token (Contents: read/write för
@@ -48,11 +54,24 @@ Allt framsteg sparas i `localStorage` (alla anrop i try/catch – sajten fungera
 | `js/ljud.js` | Feedbackljud med Web Audio |
 | `js/figurer.js` | Bosse Bäver, Ella Älg, Lilla Lo (SVG) |
 | `js/alfabet.js` | Alfabetsraden med uttalsexempel |
+| `js/kort.js` | Flashcards: leklista, vändkort, Leitner-repetition, svep |
+| `js/kortdata.js` | Lekarna och valideringen av `data/kort-*.json` (delas av webbläsaren och `verktyg/kontroll.js`) |
+| `data/kort-a1.json` … `kort-c2.json`, `kort-medicin.json` | Flashcard-lekarna (ett kort per rad) |
 | `js/app.js` | Karta, lektioner, övningar, märken, egna ord, GitHub-sparning |
 | `words.json` | Alla ord/fraser (ett per rad för läsbara diffar) |
 | `lagg-till-ord.js` | Lägg till ett ord från terminalen |
 | `verktyg/ordfil.js` | Gemensam validering/serialisering av `words.json` |
-| `verktyg/kontroll.js` | Kontrollerar `words.json` och att alla texter i `js/i18n.js` finns på sv/en/pl |
+| `verktyg/kontroll.js` | Kontrollerar `words.json`, flashcard-lekarna och att alla texter i `js/i18n.js` finns på sv/en/pl |
+
+### Format i `data/kort-*.json`
+
+```json
+{"deck":"a1","titel":{"sv":"A1 – Nybörjare","en":"A1 – Beginner","pl":"A1 – Początkujący"},"kort":[
+{"id":"a1-001","pl":"dom","en":"house","sv":"ett hus","exempel_sv":"Vi bor i ett rött hus.","kategori":"hem"}]}
+```
+
+`id`, `pl`, `en`, `sv` krävs; `exempel_sv` och `kategori` får inte vara tomma om de finns. Inga dubbletter av `id`/`sv`
+i en lek. `node verktyg/kontroll.js` kräver minst 150 kort per nivålek.
 
 ### Format i `words.json`
 

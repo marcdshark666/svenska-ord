@@ -568,3 +568,101 @@ input[type="range"] { width: 100%; accent-color: var(--bla); }
 /* Menytexterna (översatta) får inte ärva ikonstorleken och ska rymmas på en rad. */
 .nav a { min-width: 0; }
 .nav a span[data-i18n] { font-size: inherit; max-width: 100%; padding: 0 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ================= Flashcards (js/kort.js) ================= */
+.knapp.gul { --f: var(--gul); --k: var(--gul-mork); --t: #3a2e00; }
+.lekar { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 12px 0; }
+.lek {
+  position: relative; display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  padding: 14px 14px 12px; border-radius: var(--radie); border: 2px solid var(--kant); border-bottom-width: 5px;
+  background: var(--kort); color: var(--text); text-decoration: none; box-shadow: var(--skugga);
+  transition: transform .08s ease, border-color .15s;
+}
+a.lek:hover { border-color: var(--bla); }
+a.lek:active { transform: translateY(2px); border-bottom-width: 3px; }
+a.lek:focus-visible { outline: 3px solid var(--gul); outline-offset: 2px; }
+.lek.snart, .lek.laddar { opacity: .7; border-style: dashed; box-shadow: none; }
+.lek-ikon { font-size: 1.9rem; line-height: 1; }
+.lek-namn { font-weight: 800; font-size: 1rem; line-height: 1.25; overflow-wrap: anywhere; padding-right: 26px; }
+.lek-antal { font-size: .9rem; color: var(--dampad); }
+.lek-kan { font-size: .92rem; font-weight: 700; }
+.lek .stapel { flex: none; height: 8px; margin: 2px 0; }
+.lek .stapel > span { display: block; height: 100%; background: linear-gradient(90deg, var(--gron), #6bd66f); border-radius: 999px; }
+.lek-snart { align-self: flex-start; margin-top: 4px; padding: 2px 10px; border-radius: 999px; background: var(--kant); font-size: .8rem; font-weight: 800; }
+.lek-noll {
+  position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--kant); background: var(--bg); color: var(--dampad); font-size: 1rem; cursor: pointer;
+}
+.lek-noll:hover { color: var(--rod); border-color: var(--rod); }
+
+.kort-topp { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.kort-titel { font-size: 1.2rem; margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.kort-rad { margin: 8px 0 10px; font-size: .92rem; }
+.flip-scen { perspective: 1200px; margin: 6px 0 14px; touch-action: pan-y; }
+.flipkort {
+  position: relative; cursor: pointer; border-radius: 22px; outline: none; user-select: none; -webkit-user-select: none;
+  transition: transform .2s ease;
+}
+.flipkort:focus-visible { box-shadow: 0 0 0 3px var(--gul); }
+.flip-inre {
+  display: grid; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.3, .7, .3, 1);
+}
+.flipkort.vand .flip-inre { transform: rotateY(180deg); }
+.sida {
+  grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  min-height: 300px; padding: 22px 18px; border-radius: 22px; text-align: center; min-width: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border: 2px solid var(--kant); border-bottom-width: 6px; box-shadow: var(--skugga);
+}
+.sida.fram { background: var(--kort); }
+.sida.bak {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, var(--bla) 0%, var(--bla-mork) 100%); color: #fff; border-color: var(--bla-mork);
+}
+.kort-lada {
+  position: absolute; top: 12px; left: 14px; font-size: .78rem; font-weight: 800; color: var(--dampad);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.sida.bak .kort-lada { color: rgba(255, 255, 255, .85); }
+.kort-rad-sprak { display: flex; flex-direction: column; align-items: center; gap: 4px; max-width: 100%; }
+.sprak-etikett {
+  display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px;
+  font-size: .72rem; font-weight: 800; letter-spacing: .06em; background: var(--kant); color: var(--text);
+}
+.kort-ord { font-size: 1.6rem; font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; max-width: 100%; }
+.kort-rad-sprak + .kort-rad-sprak { padding-top: 10px; border-top: 1px dashed var(--kant); width: 80%; }
+.kort-tips { font-size: .8rem; margin-top: 4px; }
+.kort-sv-rad { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; max-width: 100%; }
+.kort-sv { font-size: 2rem; font-weight: 900; line-height: 1.15; overflow-wrap: anywhere; min-width: 0; }
+.sida.bak .hogtalare { background: #fff; border-color: rgba(0, 0, 0, .15); }
+.kort-exempel {
+  display: flex; align-items: center; gap: 10px; max-width: 100%; text-align: left;
+  background: rgba(255, 255, 255, .14); border-radius: 12px; padding: 8px 10px; font-size: 1rem; font-style: italic;
+}
+.kort-exempel span { overflow-wrap: anywhere; min-width: 0; }
+.sida.bak .kort-sma { color: rgba(255, 255, 255, .8); font-size: .85rem; overflow-wrap: anywhere; }
+.kort-kategori { font-size: .72rem; font-weight: 800; padding: 2px 9px; border-radius: 999px; background: var(--gul); color: #3a2e00; }
+.flipkort.svep-h .sida.bak { box-shadow: 0 0 0 4px var(--gron); }
+.flipkort.svep-v .sida.bak { box-shadow: 0 0 0 4px var(--rod); }
+.kort-fot { min-height: 52px; }
+.betyg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.betyg .knapp { padding: 8px 6px; min-width: 0; }
+.betyg.dold, .vand-knapp.dold { display: none; }
+.vand-knapp { width: 100%; }
+.kort-verktyg { justify-content: space-between; }
+.kort-klart .knapprad { justify-content: center; }
+@media (min-width: 560px) { .sida { min-height: 340px; } .kort-ord { font-size: 1.9rem; } .kort-sv { font-size: 2.4rem; } }
+@media (max-width: 380px) { .kort-ord { font-size: 1.35rem; } .kort-sv { font-size: 1.65rem; } .sida { padding: 20px 12px; } }
+@media (prefers-reduced-motion: reduce) {
+  .flip-inre, .flipkort, .lek { transition: none !important; }
+}
+
+/* Språkknappen i ⚙️ Mer fick sidan att scrolla i sidled på 360 px. */
+.sprakval.stor { max-width: 100%; flex-wrap: wrap; }
+@media (max-width: 400px) { .sprakval.stor button { padding: 8px 10px; } }
+a.knapp { text-decoration: none; }
+html body a.lek { color: var(--text); }
+.kort-ord-rad { display: inline-flex; align-items: center; justify-content: center; gap: 10px; max-width: 100%; }
+.kort-ord-rad .kort-ord { min-width: 0; }
+.kort-hint { margin: -6px 0 10px; text-align: center; }
+.kort-spela { touch-action: manipulation; }
