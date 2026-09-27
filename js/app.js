@@ -39,7 +39,7 @@
     'Klara bosskampen för att låsa upp nästa del av kartan.',
     'Repetera svaga ord – det kostar inga hjärtan och ger ett tillbaka.',
     'Du kan byta mellan engelska och polska uppe till höger.',
-    'Siffran 7 heter sju – tänk "hwoo" med läpparna framåt.'
+    'Sj-ljudet i sju, sjö och sjuk är typiskt svenskt – lyssna noga och härma!'
   ];
   const BERÖM = ['Snyggt!', 'Kanon!', 'Toppen!', 'Grymt!', 'Helt rätt!', 'Bra jobbat!', 'Suveränt!', 'Klockrent!'];
   const TROST = ['Ingen fara – nu kan du det!', 'Nästan! Nästa gång sitter det.', 'Misstag är hur man lär sig.', 'Lugnt, vi tar det igen senare.'];
