@@ -1,6 +1,6 @@
 /* figurer.js – egenritade figurer (inline SVG): Bosse Bäver, Ella Älg och Lilla Lo (lodjursunge).
  * SVG-koden är konstant (ingen användartext), så den sätts via innerHTML i en mall.
- * Humör styrs med CSS-klasser: glad, trost, fira, vinka, tank. */
+ * Humör styrs med CSS-klasser: glad, trost, fira, vinka, tank. Klassen pratar öppnar och stänger munnen (samtalsläget). */
 (function () {
   'use strict';
   const { h } = window.DOM;
@@ -31,6 +31,7 @@
         <g class="bryn"><path d="M43 36 L54 31" stroke="#3a2414" stroke-width="2.5" stroke-linecap="round"/><path d="M77 36 L66 31" stroke="#3a2414" stroke-width="2.5" stroke-linecap="round"/></g>
         <ellipse cx="60" cy="52" rx="6.5" ry="4.5" fill="#3a2414"/>
         ${MUN}
+        <g class="mun-prat"><ellipse cx="60" cy="67" rx="9" ry="6.5" fill="#3a1a10"/><ellipse cx="60" cy="71" rx="5.5" ry="2.6" fill="#e0707a"/></g>
         <rect class="tand" x="55" y="62" width="10" height="9" rx="1.5" fill="#fff" stroke="#d6d0c4"/>
         <line class="tand" x1="60" y1="62" x2="60" y2="71" stroke="#d6d0c4"/>
       </g></svg>`,

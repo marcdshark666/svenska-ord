@@ -64,7 +64,17 @@ for (const lek of KortData.LEKAR) {
 }
 for (const lek of KortData.LEKAR) if (ordbok && !ordbok['kort.lek.' + lek]) fel.push(`leken ${lek} saknar namn (kort.lek.${lek} i js/i18n.js)`);
 
+// Samtalsläget (data/samtal.json): schema, alla tre språk, förslagen godkänns och felalternativen gör det inte.
+const SamtalData = require('../js/samtaldata.js');
+let samtalAntal = 0;
+try {
+  const sd = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'samtal.json'), 'utf8').replace(/^﻿/, ''));
+  fel.push(...SamtalData.validera(sd));
+  samtalAntal = Array.isArray(sd.samtal) ? sd.samtal.length : 0;
+} catch (e) { fel.push('data/samtal.json går inte att läsa: ' + e.message); }
+
 if (fel.length) { console.error('FEL:\n  ' + fel.join('\n  ')); process.exit(1); }
 console.log(`OK: ${data.ord.length} ord/fraser, ${data.lektioner.length} lektioner, ${ordbok ? Object.keys(ordbok).length : 0} gränssnittstexter på sv/en/pl.`);
 for (const n of of.NIVAER) console.log(`  ${n}: ${data.ord.filter(o => o.niva === n).length}`);
 console.log('Flashcards: ' + Object.entries(kortAntal).map(([l, n]) => `${l}=${n}`).join(', '));
+console.log(`Samtal: ${samtalAntal}`);

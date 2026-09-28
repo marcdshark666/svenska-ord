@@ -40,6 +40,16 @@ Gratis, reklamfritt och helt statiskt (vanilla HTML/CSS/JS, inga byggsteg). Kör
   definition från engelska Wiktionary (live, cache, tidsgräns 5 s, tyst reserv), andra exempelmeningar och fraser ur alla
   lekar + `words.json`, och länkar till svenska.se, Glosbe sv→pl/sv→en och Wiktionary. Böjningar hittar grundformen
   (huset → hus, sprang → springa). Översättningar hittas aldrig på: saknas en visas det med länk till Glosbe.
+- **💬 Prata med Bosse (samtalsläge, `#/samtal`):** som en talapp – Bosse Bäver pratar svenska med dig (speechSynthesis
+  sv-SE, munnen rör sig när han talar), du svarar med mikrofonen (SpeechRecognition sv-SE i Chrome, Edge och Safari), appen
+  visar vad den hörde (lila bubbla med ✓/✗) och Bosse ger feedback: rätt → "Perfekt!" och nästa replik, känt misstag →
+  "Nästan! Säg: ”…”" plus en förklaring (t.ex. *Jag har 25 år* → *Jag är 25 år*, *Jag är kall* → *Jag fryser*), annars
+  "Försök igen" och efter två försök "Säg efter mig" + **Gå vidare**. 12 skriptade samtal A1–C2 (hälsa, är du hungrig,
+  fika, fråga om vägen, boka bord, helgen, jobbintervju, lämna tillbaka en vara, distansarbete, hyresvärden, idiom, debatt)
+  i `data/samtal.json`. Översättning och tips visas på **engelska eller polska** (knappen EN | PL, sparas i
+  `localStorage` `svenskaord.samtal.v1`, som också minns bästa stjärnor per samtal). Utan taligenkänning (Firefox): skriv
+  svaret (å/ä/ö-knappar) eller **Välj svar** bland tre alternativ. Tolerant matchning i `js/samtaldata.js`: ordnivå-
+  Levenshtein, prickfritt, `*` = valfria ord (fångar t.ex. namnet), nyckelord. Inga API:er, inget kostar pengar.
 - **Mina ord:** formulär som sparar egna ord i webbläsaren (localStorage) och direkt blir lektionen "Mina ord".
   Export/import som JSON.
 - **Spara till GitHub** (valfritt): användaren klistrar in en egen fine-grained token (Contents: read/write för
@@ -61,6 +71,9 @@ Allt framsteg sparas i `localStorage` (alla anrop i try/catch – sajten fungera
 | `js/alfabet.js` | Alfabetsraden med uttalsexempel |
 | `js/kort.js` | Flashcards: leklista, vändkort, Leitner-repetition, svep |
 | `js/lexikon.js` | Ordboksläget: lokalt lexikon med böjningsmatchning, Wiktionary, rutan |
+| `js/samtal.js` | Samtalsläget: Bosse pratar, mikrofon/skriv/välj, rättning, hjälpspråk EN/PL |
+| `js/samtaldata.js` | Bedömning av svar (tolerant matchning) och validering av `data/samtal.json` (webbläsare + Node) |
+| `data/samtal.json` | Samtalen: repliker sv/en/pl, godkända svar (`*` = valfria ord), vanliga fel med rättning, felalternativ |
 | `js/kortdata.js` | Lekarna och valideringen av `data/kort-*.json` (delas av webbläsaren och `verktyg/kontroll.js`) |
 | `data/kort-a1.json` … `kort-c2.json`, `kort-medicin.json` | Flashcard-lekarna (ett kort per rad) |
 | `js/app.js` | Karta, lektioner, övningar, märken, egna ord, GitHub-sparning |

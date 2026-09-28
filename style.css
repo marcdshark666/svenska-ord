@@ -710,3 +710,96 @@ html body a.lek { color: var(--text); }
 }
 @keyframes lexUpp { from { transform: translateY(40px); opacity: .4; } to { transform: none; opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .dlg.lexikon[open] { animation: none; } }
+
+/* ================= Samtalsläget: Prata med Bosse (js/samtal.js) ================= */
+:root { --lila: #6d3df5; --lila-mork: #5226d0; }
+.figur .mun-prat { display: none; }
+.figur.pratar .mun-glad, .figur.pratar .mun-ledsen { display: none; }
+.figur.pratar .mun-prat { display: inline; animation: prata .18s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+@keyframes prata { from { transform: scaleY(.25); } to { transform: scaleY(1.15); } }
+
+.samtal-ingang { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); border-width: 2px; border-color: var(--lila); }
+.samtal-ingang:hover { filter: brightness(1.03); }
+.samtal-ingang-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.samtal-ingang .knapp { flex: none; }
+@media (max-width: 420px) { .samtal-ingang { flex-wrap: wrap; } .samtal-ingang .knapp { width: 100%; } }
+
+.hjalprad { display: flex; align-items: center; gap: 8px; margin: 6px 0; flex-wrap: wrap; }
+.hjalpval .sprak-kod { display: inline; }
+.samtal-niva-rubrik { margin-top: 18px; }
+.samtal-sv-titel { font-size: .85rem; color: var(--dampad); font-style: italic; overflow-wrap: anywhere; }
+.samtal-stjarnor { color: #f5a300; font-size: 1.05rem; letter-spacing: 2px; }
+.samtal-stjarnor.tomma { color: var(--kant); }
+.samtal-stjarnor.stora { font-size: 2.2rem; text-align: center; }
+
+.samtal {
+  display: flex; flex-direction: column; gap: 6px;
+  height: calc(100vh - var(--samtal-ovan, 160px) - var(--nav-h) - env(safe-area-inset-bottom) - 36px);
+  height: calc(100dvh - var(--samtal-ovan, 160px) - var(--nav-h) - env(safe-area-inset-bottom) - 36px);
+  min-height: 420px;
+}
+.samtal-topp { display: flex; align-items: center; gap: 8px; flex: none; }
+.samtal-topp .hjalprad { margin: 0; flex: none; }
+.samtal-topp .hjalprad > .dampad { display: none; }
+.samtal-titel { font-size: 1.05rem; line-height: 1.2; margin: 0; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.samtal-niva { flex: none; font-weight: 800; font-size: .8rem; padding: 3px 10px; border-radius: 999px; background: var(--gul); color: #3a2e00; }
+.samtal-scen {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 0 10px;
+  border-radius: 22px; background: radial-gradient(circle at 50% 35%, rgba(109, 61, 245, .16), rgba(0, 106, 167, .08) 60%, transparent 75%);
+}
+.samtal-scen { flex: none; padding: 8px 0 6px; }
+.samtal-scen .figur { width: clamp(84px, 15vh, 150px) !important; }
+.samtal-prickar { display: flex; gap: 6px; }
+.samtal-prickar span { width: 10px; height: 10px; border-radius: 50%; background: var(--kant); transition: background .2s; }
+.samtal-prickar span.klar { background: var(--gron); }
+.samtal-prickar span.nu { background: var(--lila); box-shadow: 0 0 0 3px rgba(109, 61, 245, .25); }
+
+.samtal-logg { display: flex; flex-direction: column; gap: 8px; padding: 4px 2px; flex: 1 1 auto; min-height: 90px; overflow-y: auto; overscroll-behavior: contain; }
+.samtal-logg > :first-child { margin-top: auto; }
+.samtal-rad { display: flex; }
+.samtal-rad.du { justify-content: flex-end; }
+.samtal-rad.ny .samtal-bubbla { animation: poppa .3s ease; }
+.samtal-bubbla { max-width: 88%; padding: 10px 14px; border-radius: 18px; box-shadow: var(--skugga); overflow-wrap: anywhere; }
+.samtal-bubbla.bosse { background: var(--kort); border: 2px solid var(--kant); border-bottom-left-radius: 6px; }
+.samtal-bubbla.bosse.rattning { border-color: #f0a24a; }
+.samtal-bubbla.bosse.beröm { border-color: var(--gron); }
+.samtal-bubbla.du { background: var(--lila); color: #fff; font-weight: 700; border-bottom-right-radius: 6px; display: flex; align-items: center; gap: 8px; }
+.samtal-markering { flex: none; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .9rem; font-weight: 900; background: #fff; }
+.samtal-bubbla.du.ratt .samtal-markering { color: var(--gron-mork); }
+.samtal-bubbla.du.fel .samtal-markering { color: #fff; background: var(--rod); }
+.samtal-sv-rad { display: flex; align-items: flex-start; gap: 8px; }
+.samtal-sv { flex: 1; min-width: 0; font-size: 1.1rem; font-weight: 700; line-height: 1.35; }
+.samtal-ljud { display: flex; gap: 4px; flex: none; }
+.samtal-over { margin-top: 4px; font-size: .9rem; color: var(--dampad); }
+.samtal-tips { margin-top: 6px; padding: 6px 10px; border-radius: 10px; background: #fff4d6; color: #4b3b00; font-size: .88rem; }
+
+.samtal-kontroller {
+  flex: none; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  margin: 0 -16px -12px; padding: 10px 16px 4px; background: var(--bg); border-top: 1px solid var(--kant);
+}
+@media (max-height: 700px) { .samtal-mik { width: 62px !important; height: 62px !important; } .samtal-mik-ikon { font-size: 1.6rem !important; } }
+.samtal-kontroller > .knapprad, .samtal-kontroller > .ruta, .samtal-kontroller > form, .samtal-kontroller > .alternativ, .samtal-kontroller > .knapp { width: 100%; max-width: 560px; margin: 0; }
+.samtal-verktyg { justify-content: center; }
+.samtal-mik {
+  width: 76px; height: 76px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--gron); box-shadow: inset 0 -6px 0 var(--gron-mork), 0 4px 14px rgba(59, 181, 74, .35);
+  display: inline-flex; align-items: center; justify-content: center; transition: transform .08s ease;
+}
+.samtal-mik-ikon { font-size: 2rem; line-height: 1; filter: grayscale(1) brightness(3); }
+.samtal-mik:active:not(:disabled) { transform: translateY(2px) scale(.97); }
+.samtal-mik:disabled { opacity: .45; cursor: not-allowed; }
+.samtal-mik.lyssnar { background: var(--rod); box-shadow: inset 0 -6px 0 var(--rod-mork); animation: mikpuls 1.1s ease-out infinite; }
+@keyframes mikpuls { 0% { box-shadow: inset 0 -6px 0 var(--rod-mork), 0 0 0 0 rgba(229, 72, 77, .55); } 100% { box-shadow: inset 0 -6px 0 var(--rod-mork), 0 0 0 22px rgba(229, 72, 77, 0); } }
+.samtal-status { font-weight: 800; font-size: .92rem; color: var(--dampad); text-align: center; }
+.samtal-skriv { display: flex; flex-direction: column; gap: 6px; }
+.samtal-skriv .falt { width: 100%; }
+.samtal-val { display: grid; gap: 8px; }
+.samtal-hjalp { text-align: left; }
+.samtal-klar { text-align: center; }
+.samtal-klar .knapprad { justify-content: center; }
+.centrerad.liten { margin: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .figur.pratar .mun-prat { animation: none !important; transform: scaleY(.7); }
+  .samtal-mik.lyssnar, .samtal-rad.ny .samtal-bubbla { animation: none !important; }
+}
+.samtal-kort, .samtal-kort .lek-namn { color: var(--text) !important; }

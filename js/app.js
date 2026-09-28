@@ -245,8 +245,9 @@
     uppdateraHuvud();
     // Flashcards (js/kort.js): vid språkbyte ritas passet om utan att kön tappas.
     if (sida === 'kort' && behallScroll && window.Kort.omrita(vy())) return;
+    if (sida === 'samtal' && behallScroll && window.Samtal.omrita(vy())) return;
     const f = { hem: visaHem, ordlista: visaOrdlista, mina: visaMina, profil: visaProfil, installningar: visaInstallningar,
-      kort: rot => window.Kort.visa(rot, del) }[sida] || visaHem;
+      kort: rot => window.Kort.visa(rot, del), samtal: rot => window.Samtal.visa(rot, del) }[sida] || visaHem;
     tom(vy());
     try { f(vy()); } catch (e) { console.error(e); vy().appendChild(felruta(t('fel.nagot', { fel: e.message }))); }
     if (!behallScroll) window.scrollTo(0, 0);
@@ -290,6 +291,12 @@
         nasta ? h('button', { type: 'button', class: 'knapp gron', onclick: () => startaLektion(nasta.id) }, t('hem.fortsatt', { titel: lektionsTitel(nasta) })) : null,
         h('button', { type: 'button', class: 'knapp bla', onclick: () => startaRepetition() }, t('hem.repetera')),
         h('span', { class: 'dampad liten' }, t('hem.repInfo')))));
+
+    // Samtalsläget (js/samtal.js): prata med Bosse.
+    rot.appendChild(h('a', { class: 'ruta samtal-ingang', href: '#/samtal' },
+      Figurer.figur('bosse', 'glad', { storlek: 64 }),
+      h('span', { class: 'samtal-ingang-text' }, h('b', null, '💬 ', t('samtal.rubrik')), h('span', { class: 'dampad liten' }, t('samtal.hemText'))),
+      h('span', { class: 'knapp gron liten' }, t('samtal.hemKnapp'))));
 
     if (!Tal.finnsUppläsning || !Tal.harSvenskRost) {
       rot.appendChild(h('div', { class: 'ruta varning', id: 'rost-varning' },
@@ -1565,6 +1572,13 @@
         if (!vy().querySelector(selektor)) fel.push(`flashcards: ${hash} visade aldrig ${selektor}`);
         return vy();
       });
+      // Samtalsläget: listan och alla samtal spelas igenom (js/samtal.js).
+      if (window.Samtal) await window.Samtal.sjalvtest(fel, async (hash, selektor) => {
+        location.hash = hash; visa();
+        for (let i = 0; i < 100 && !vy().querySelector(selektor); i++) await new Promise(r => setTimeout(r, 50));
+        if (!vy().querySelector(selektor)) fel.push(`samtal: ${hash} visade aldrig ${selektor}`);
+        return vy();
+      }); else fel.push('samtal.js saknas');
       if (I18n.saknade.length) fel.push('saknade översättningar: ' + I18n.saknade.join(', '));
       I18n.setSprak(forraSprak);
       location.hash = '#/hem'; visa();
